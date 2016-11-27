@@ -29,7 +29,10 @@ public class Bullet extends GameObject{
     boolean isHit=false;
     public static BufferedImage imageBull;
     private ObjectHandler handler;
-    public Enemy temp;
+    public static Enemy temp;
+    public static boolean kenaBull=false;
+    public int tipe;
+    
     LinkedList<Bullet> bullets= new LinkedList<>();
     @Override
     public Rectangle getBounds() {
@@ -38,9 +41,10 @@ public class Bullet extends GameObject{
     
     
     
-    public Bullet(float x, float y, ObjectHandler handler) {
+    public Bullet(int tipe, float x, float y, ObjectHandler handler) {
         super(x, y, 16, 16, ObjectID.BULLET);
         this.handler = handler;
+        this.tipe=tipe;
         jarakBull=0;
     }
     
@@ -57,6 +61,7 @@ public class Bullet extends GameObject{
                     c=true;
                     temp=mon;
                     temp.darah-=25;
+                    System.out.println(temp.darah);
                 }
                 
                 
@@ -74,15 +79,22 @@ public class Bullet extends GameObject{
     @Override
     public void tick(List<GameObject> objects) {
         
-        if(kenaMomon(objects)){
-//            handler.removeObject(this);
-            if(temp.darah==0)
-            {
-                handler.removeObject(temp);
+        if(tipe==1)
+        {
+            if(kenaMomon(objects)){
+    //            handler.removeObject(this);
+
+                if(temp.darah==0)
+                {
+                    kenaBull=true;
+
+                    //handler.removeObject(temp);
+                }
+
+                isHit=true;
             }
-            
-            isHit=true;
         }
+        
         
         
         
@@ -104,9 +116,9 @@ public class Bullet extends GameObject{
     @Override
     public void render(Graphics2D g2d) {
         g2d.drawImage(imageBull , (int) x, (int) y, null);
-        Graphics2D g = (Graphics2D) g2d;
-        g.setColor(Color.blue);
-        g.draw(getBounds());
+//        Graphics2D g = (Graphics2D) g2d;
+//        g.setColor(Color.blue);
+//        g.draw(getBounds());
     }
     
 }

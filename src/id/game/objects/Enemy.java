@@ -174,8 +174,8 @@ public class Enemy extends GameObject {
         
         if(spawnBullet(objects)){
             
-            bull = new Bullet(xEnemy, yEnemy-80, handler);
-            bull.velX=5f;
+            bull = new Bullet(2, xEnemy, yEnemy, handler);
+            bull.velX=-5f;
             bull.imageBull=Game.getInstance().assets.bullet[0];
             
 //                    handler.addObject(bull);
@@ -214,10 +214,10 @@ public class Enemy extends GameObject {
 //        g2d.setColor(Color.gray);
 //        g2d.fillRect((int)getX(), (int)getY(), (int)64, (int)43);
         Graphics2D g = (Graphics2D) g2d;
-        g.setColor(Color.yellow);
-        g.draw(getBoundsLeft());
-        g.setColor(Color.blue);
-        g.draw(getBoundsRight());
+//        g.setColor(Color.yellow);
+//        g.draw(getBoundsLeft());
+//        g.setColor(Color.blue);
+//        g.draw(getBoundsRight());
         
         //Draw Text
         g2d.setColor(Color.white);

@@ -3,8 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/sony/Documents/NetBeansProjects/WakeUpTiled/src/id/game/main/Game.java</file>
-            <file>file:/C:/Users/sony/Documents/NetBeansProjects/WakeUpTiled/src/id/game/objects/Rect.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/objects/Enemy.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/objects/Bullet.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/objects/Miscellaneous.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/main/Game.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/core/ObjectHandler.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/core/GameObject.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/objects/Player.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/main/Menu.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/objects/Button.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/objects/Extralife.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/GameDev-WakeUp/src/id/game/objects/Obstacle.java</file>
         </group>
     </open-files>
 </project-private>

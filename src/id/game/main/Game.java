@@ -39,9 +39,10 @@ public class Game extends Canvas implements Runnable {
     private MouseHandler mouseHandler;
     public static Camera camera;
     public static Player player;
+    public static Miscellaneous kunci;
     public static Enemy enemy;
     public Bullet bull;
-    public static Rect[] pager = new Rect[2];
+    public static Rect[] pager = new Rect[5];
     BufferedImage level;
     BufferedImage map, background;
     
@@ -51,6 +52,7 @@ public class Game extends Canvas implements Runnable {
     static Game game;
     public Menu menu;
     public HUD hud;
+    public int seconds;
     
     public boolean c = false;
     
@@ -81,7 +83,7 @@ public class Game extends Canvas implements Runnable {
         player = new Player(0, 0, handler);
         handler.addObject(player);
         
-        handler.addObject(new Miscellaneous(6272, 320, handler));
+        
         
         
         
@@ -149,6 +151,18 @@ public class Game extends Canvas implements Runnable {
         handler.addObject(new Rect(3, 5824, 768 , 192, 64));
         handler.addObject(new Rect(3, 3200, 1088 , 1536, 64));
         handler.addObject(new Rect(3, 5376, 1088 , 1024, 64));
+        handler.addObject(new Rect(3, 6400, 1088 , 3200, 192));
+        handler.addObject(new Rect(3, 7936, 0 , 64, 896));
+        handler.addObject(new Rect(3, 8000, 0 , 1600, 64));
+        handler.addObject(new Rect(3, 9536, 64 , 64, 1024));
+        handler.addObject(new Rect(3, 6784, 832 , 128, 64));
+        handler.addObject(new Rect(3, 7232, 768 , 128, 64));
+        handler.addObject(new Rect(3, 7680, 704 , 128, 64));
+        handler.addObject(new Rect(3, 7872, 512 , 64, 64));
+        handler.addObject(new Rect(3, 7616, 320 , 64, 64));
+        handler.addObject(new Rect(3, 6912, 128 , 256, 128));
+        handler.addObject(new Rect(3, 6912, 256 , 64, 192));
+        handler.addObject(new Rect(3, 6976, 384 , 320, 64));
     }
     
     public void obstacle(){
@@ -218,7 +232,7 @@ public class Game extends Canvas implements Runnable {
     }
     
     public void tick() {
-        
+        seconds++;
         keyHandler.tick();
         switch(currentState){
             case MAIN_MENU:
@@ -232,19 +246,51 @@ public class Game extends Canvas implements Runnable {
                     Game.player.setX(0);
                 }
                 
-                if(Miscellaneous.c)
+                if(Extralife.c){
+                    handler.removeObject(Extralife.ex);
+                    
+                }
+                
+                if(Miscellaneous.pager1)
                 {
                     handler.removeObject(pager[0]);
                     handler.removeObject(pager[1]);
+                }
+                
+                if(Miscellaneous.pager2)
+                {
+                    handler.removeObject(kunci);
+                    handler.removeObject(pager[2]);
+                    handler.removeObject(pager[3]);
+                    handler.removeObject(pager[4]);
+                }
+                
+                if(Miscellaneous.pagerHidden)
+                {
+                    handler.addObject(pager[2]);
+                    handler.addObject(pager[3]);
+                    handler.addObject(pager[4]);
                 }
                 
                 if(Player.kena){
                     handler.removeObject(Player.enemy);
                 }
                 
+                
                 if(Enemy.liatPlayer)
                 {  
-                    handler.addObject(Enemy.bull);
+                    //enemyBullet.addFirst(bull);
+                    if(seconds>=100){
+                    handler.addObject(Enemy.bull); 
+                    seconds=0;
+                    Enemy.liatPlayer=false;
+                    }
+                }
+                
+                if(Bullet.kenaBull)
+                {
+                    handler.removeObject(Bullet.temp);
+                    Bullet.kenaBull=false;
                 }
                 
                 handler.tick();
@@ -278,8 +324,8 @@ public class Game extends Canvas implements Runnable {
                 g.scale(0.9 , 0.9);
                 
                 g.translate((int)camera.getX(), (int)camera.getY());
-                g.drawImage(background, 0, 640, 6400 , 640 , null);
-                g.drawImage(map, 0, 0, 6400 , 1280 , null);
+                g.drawImage(background, 0, 640, 9600 , 640 , null);
+                g.drawImage(map, 0, 0, 9600 , 1280 , null);
                 
                 handler.render(g);
                 g.translate(-(int)camera.getX(), -(int)camera.getY());
@@ -383,10 +429,20 @@ public class Game extends Canvas implements Runnable {
         handler.removeObject(player);
         player = new Player(0, 640,handler);
         handler.addObject(player);
+        handler.addObject(new Miscellaneous(1, 6272, 320, handler));
+        handler.addObject(new Miscellaneous(3, 8064, 960, handler));
+        kunci = new Miscellaneous(2, 6976, 320, handler);
+        handler.addObject(kunci);
         pager[0]= new Rect(1, 5504, 960, 64, 64);
         pager[1]= new Rect(1, 5504, 1024, 64, 64);
+        pager[2]= new Rect(4, 7936, 896, 64, 64);
+        pager[3]= new Rect(5, 7936, 960, 64, 64);
+        pager[4]= new Rect(6, 7936, 1024, 64, 64);
         handler.addObject(pager[0]);
         handler.addObject(pager[1]);
+        handler.addObject(pager[2]);
+        handler.addObject(pager[3]);
+        handler.addObject(pager[4]);
         
         extraLIfe();
         

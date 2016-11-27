@@ -19,19 +19,24 @@ public class Miscellaneous extends GameObject {
     private float velX;
     private float velY;
     public static boolean c = false;
+    public static boolean pager1 = false;
+    public static boolean pager2 = false;
+    public static boolean pagerHidden = false;
     public boolean temp = false;
     private ObjectHandler handler;
-    public BufferedImage img, life;
-
+    public BufferedImage img, press;
+    public int tipe;
     
     
-    public Miscellaneous(float x, float y, ObjectHandler handler) {
+    public Miscellaneous(int tipe, float x, float y, ObjectHandler handler) {
         super(x, y, 64, 64, ObjectID.MISC);
         
         this.handler = handler;
+        this.tipe = tipe;
         
         img = Game.assets.other[94];
-        life = ImageLoader.load("extralife.png");
+        press = Game.assets.other[108];
+        //life = ImageLoader.load("extralife.png");
 
         
     }
@@ -52,13 +57,49 @@ public class Miscellaneous extends GameObject {
         this.velY = velY;
     }
     
-    public boolean kenaSentuh(List<GameObject> objects) {
+    public boolean katrol(List<GameObject> objects) {
         
         for(int i =0; i<objects.size(); i ++){
             if(objects.get(i).getType() == ObjectID.BULLET){
                 Bullet bull = (Bullet) objects.get(i);
                 if(getBounds().intersects(bull.getBounds())){
                    c=true;
+                   
+                }
+                
+                
+            }
+        }
+        return c;
+        
+    }
+    
+    public boolean kunci(List<GameObject> objects) {
+        
+        for(int i =0; i<objects.size(); i ++){
+            if(objects.get(i).getType() == ObjectID.PLAYER){
+                Player pla = (Player) objects.get(i);
+                if(getBounds().intersects(pla.getBoundsAll())){
+                   c=true;
+                   pager2=true;
+                   
+                }
+                
+                
+            }
+        }
+        return c;
+        
+    }
+    
+    public boolean hidden(List<GameObject> objects) {
+        
+        for(int i =0; i<objects.size(); i ++){
+            if(objects.get(i).getType() == ObjectID.PLAYER){
+                Player pla = (Player) objects.get(i);
+                if(getBounds().intersects(pla.getBoundsAll())){
+                   c=true;
+                   pagerHidden=true;
                    
                 }
                 
@@ -80,11 +121,37 @@ public class Miscellaneous extends GameObject {
 
     @Override
     public void tick(List<GameObject> objects) {
-    
-        if(kenaSentuh(objects))
+        
+        if(katrol(objects))
         {
-            img = Game.assets.other[118];
+            if(tipe==1)
+            {
+                pager1=true;
+                if(pager1)
+                {
+                    img = Game.assets.other[118];
+                }
+
+            }
         }
+           
+        if(tipe==2)
+        {
+            if(kunci(objects))
+            {
+
+            }
+        }
+        
+        if(tipe==3)
+        {
+            if(hidden(objects))
+            {
+                
+            }
+        }
+        
+        
         
 
 
@@ -99,8 +166,15 @@ public class Miscellaneous extends GameObject {
 //            g.setColor(Color.yellow);
 //            g.draw(getBounds());
 
-
+        if(tipe==1)
+        {
             g2d.drawImage(img , (int) x, (int) y, null);
+        }
+            
+        if(tipe==2)
+        {
+            g2d.drawImage(press , (int) x, (int) y, null);
+        }
 
         
         

@@ -51,7 +51,7 @@ public class KeyHandler extends KeyAdapter {
                 Game.player.isShooting = true;
                 Game.player.peluru = true;
 
-                bull = new Bullet(Game.player.getX()+100, Game.player.getY()+(115/2), handler);
+                bull = new Bullet(1, Game.player.getX()+100, Game.player.getY()+(115/2), handler);
                 if(Game.player.stopPos==20)
                 {
                     bull.velX=10f;

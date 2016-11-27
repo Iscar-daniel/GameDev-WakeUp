@@ -19,11 +19,11 @@ import java.util.logging.Handler;
 public class Extralife extends GameObject {
     private float velX;
     private float velY;
-    public boolean c = false;
+    public static boolean c = false;
     public boolean temp = false;
     private ObjectHandler handler;
     public BufferedImage img, life;
-
+    public static Extralife ex;
     
     
     public Extralife(float x, float y, ObjectHandler handler) {
@@ -59,7 +59,14 @@ public class Extralife extends GameObject {
                 Player pla = (Player) objects.get(i);
                 if(getBounds().intersects(pla.getBoundsAll())){
                    c=true;
-                   handler.removeObject(this);
+                   ex=this;
+                   if(Game.getInstance().hud.health<100)
+                    {
+                        Game.getInstance().hud.health+=20;
+                        Game.getInstance().hud.jmlhDarah+=1;
+                        
+                    }
+                   //handler.removeObject(this);
                 }
                 
                 
@@ -82,12 +89,10 @@ public class Extralife extends GameObject {
 
         if(extra(objects))
         {
-            if(Game.getInstance().hud.health<100)
-            {
-                Game.getInstance().hud.health+=20;
-                Game.getInstance().hud.jmlhDarah+=1;
-            }
             
+            
+        }else{
+            c=false;
         }
 
 
