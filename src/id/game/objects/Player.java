@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import id.game.core.AudioLoader;
 
 
 public class Player extends GameObject {
@@ -29,6 +30,7 @@ public class Player extends GameObject {
     private ObjectHandler handler;
     public Bullet bull;
     public static Enemy enemy;
+    private AudioLoader tMonster;
    
     int detik=0;
     
@@ -107,7 +109,11 @@ public class Player extends GameObject {
         AttckAnimKiri = new Animation(5,meleeLeftArr);
         JumpingKanan = new Animation(8, jumpRight);
         JumpingKiri = new Animation(8, jumpLeft);
+        tMonster= new AudioLoader();
+        tMonster.load("../assets/sound/hurt.wav");
+       
         
+       
         
     }
 
@@ -189,12 +195,13 @@ public class Player extends GameObject {
                 Enemy ene = (Enemy) object;
                 if (getBoundsAll().intersects(ene.getBounds())) { 
                     c=true;
-                    
+                    tMonster.play();
                 }
                 
                 
             }
         }
+        
         return c;
         
     }
@@ -276,6 +283,7 @@ public class Player extends GameObject {
     @Override
     public void tick(List<GameObject> objects) {
         
+        
 //        if(extraLife(objects))
 //        {
 //            System.out.println("HELLO WORLD");
@@ -295,7 +303,9 @@ public class Player extends GameObject {
             System.out.println("ok");
         }else if(inOther(objects)){
             System.out.println("not ok");
-            Game.getInstance().currentState = Game.GameState.MAIN_MENU;
+            Game.getInstance().hud.health=0;
+            Game.getInstance().hud.jmlhDarah=0;
+            Game.getInstance().currentState = Game.GameState.GAME_OVER;
         }else if(inBlock(objects))
         {
             System.out.println("Di BLOCK");
@@ -353,7 +363,7 @@ public class Player extends GameObject {
             if(Game.getInstance().hud.health==0)
             {
                 Game.getInstance().hud.jmlhDarah=0;
-                Game.getInstance().currentState = Game.GameState.MAIN_MENU;
+                Game.getInstance().currentState = Game.GameState.GAME_OVER;
             }
             
         }else{

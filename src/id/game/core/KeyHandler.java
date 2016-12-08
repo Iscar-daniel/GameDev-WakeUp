@@ -9,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import id.game.core.AudioLoader;
 
 public class KeyHandler extends KeyAdapter {
     public ObjectHandler handler;
@@ -18,6 +19,8 @@ public class KeyHandler extends KeyAdapter {
     boolean cek=false;
     int jarakPeluru=0;
     int i=0;
+    private AudioLoader jump,sword,gun;
+    
     
     
     public KeyHandler(ObjectHandler handler) {
@@ -27,6 +30,8 @@ public class KeyHandler extends KeyAdapter {
     @Override
     public void keyReleased(KeyEvent e) {
         super.keyReleased(e);
+        gun= new AudioLoader();
+        gun.load("../assets/sound/lasergun.wav");
         handler.removeKey(e.getKeyCode());
         
         if (e.getKeyCode() == KeyEvent.VK_LEFT ||
@@ -44,7 +49,7 @@ public class KeyHandler extends KeyAdapter {
         }
         
         if (e.getKeyCode() == KeyEvent.VK_D) {
-            
+            gun.play();
 //            if(i<5)
 //            {
                 if(bullets.size()<5){
@@ -87,6 +92,12 @@ public class KeyHandler extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         super.keyPressed(e);
+        jump= new AudioLoader();
+        jump.load("../assets/sound/jump.wav");
+        sword= new AudioLoader();
+        sword.load("../assets/sound/sword_hit.wav");
+        
+        
         handler.addKey(e.getKeyCode());
     }
     
@@ -105,7 +116,7 @@ public class KeyHandler extends KeyAdapter {
     }
     
     public void tick() {
-        
+      
 //        for (Bullet bullet : bullets) {
 //            if(cekRangePeluru(bull)){
 //            handler.removeObject(bullets.removeFirst());
@@ -166,12 +177,15 @@ public class KeyHandler extends KeyAdapter {
         
          
          if (handler.keys.contains(KeyEvent.VK_A)) {
+            sword.play();
             Game.player.isAttack = true;
         }
          
        if (handler.keys.contains(KeyEvent.VK_SPACE)&& !Game.player.isJumping()) {
+            jump.play();
             Game.player.setJumping(true);
             Game.player.setVelY(-12);
+            
         }
          
        

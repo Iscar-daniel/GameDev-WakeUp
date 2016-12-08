@@ -7,7 +7,7 @@ import java.util.List;
 public abstract class GameObject {
 
     public enum ObjectID{
-        PLAYER, TILE, BUTTON, BULLET, ENEMY, BLOCK, OBSTACLE, MISC, EXTRALIFE
+        PLAYER, TILE, BUTTON, BULLET, ENEMY, BLOCK, OBSTACLE, MISC, EXTRALIFE, FLAG
     }
     
     protected float x, y;

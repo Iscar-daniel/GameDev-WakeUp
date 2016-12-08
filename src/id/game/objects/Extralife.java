@@ -87,11 +87,8 @@ public class Extralife extends GameObject {
     @Override
     public void tick(List<GameObject> objects) {
 
-        if(extra(objects))
+        if(!extra(objects))
         {
-            
-            
-        }else{
             c=false;
         }
 

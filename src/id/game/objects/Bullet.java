@@ -8,6 +8,7 @@ package id.game.objects;
 import id.game.core.GameObject;
 import id.game.core.ObjectHandler;
 import id.game.main.Game;
+import id.game.utils.ImageLoader;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -30,8 +31,11 @@ public class Bullet extends GameObject{
     public static BufferedImage imageBull;
     private ObjectHandler handler;
     public static Enemy temp;
+    public static Bullet bullEnemy;
     public static boolean kenaBull=false;
     public int tipe;
+    public static boolean knPlayer = false;
+    
     
     LinkedList<Bullet> bullets= new LinkedList<>();
     @Override
@@ -61,7 +65,25 @@ public class Bullet extends GameObject{
                     c=true;
                     temp=mon;
                     temp.darah-=25;
-                    System.out.println(temp.darah);
+                    //System.out.println(temp.darah);
+                }
+                
+                
+            }
+        }
+        return c;
+        
+    }
+    
+    public boolean kenaPlayer(List<GameObject> objects) {
+        boolean c = false;
+        for(GameObject object : objects){
+            if(object.getType() == ObjectID.PLAYER){
+                Player pla = (Player) object;
+                if (getBounds().intersects(pla.getBoundsAll())) { 
+                    c=true;
+                    bullEnemy = this;
+                    //System.out.println(temp.darah);
                 }
                 
                 
@@ -87,6 +109,19 @@ public class Bullet extends GameObject{
                 if(temp.darah==0)
                 {
                     kenaBull=true;
+                    if(temp.tipe==3)
+                    {
+                        //System.out.println("WIN");
+                        if(Game.lvl==1)
+                        {
+                            Game.getInstance().currentState = Game.GameState.LEVEL2;
+                        }
+                        else if(Game.lvl==2)
+                        {
+                            Game.getInstance().currentState = Game.GameState.WIN;
+                        }
+                        
+                    }
 
                     //handler.removeObject(temp);
                 }
@@ -95,6 +130,14 @@ public class Bullet extends GameObject{
             }
         }
         
+        
+        if(tipe==2)
+        {
+            if(kenaPlayer(objects))
+            {
+                knPlayer=true;
+            }
+        }
         
         
         

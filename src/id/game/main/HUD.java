@@ -50,13 +50,13 @@ public class HUD {
         }
         
         //Draw Text
-        g.setColor(Color.white);
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-        g.drawString(String.format("%03d", (int)health), 15, 100);
+//        g.setColor(Color.white);
+//        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+//        g.drawString(String.format("%03d", (int)health), 15, 100);
         
         //Draw Bar
         float wHealth = health/Max_Health*Max_Width_Health;
-        if((int)health>0 && health<=Max_Health)g.drawImage(hudHealth[1].getSubimage(0, 0, (int)wHealth, 15), 62, 85, null);
+//        if((int)health>0 && health<=Max_Health)g.drawImage(hudHealth[1].getSubimage(0, 0, (int)wHealth, 15), 62, 85, null);
         
         
     }

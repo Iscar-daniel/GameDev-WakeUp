@@ -1,5 +1,6 @@
 package id.game.main;
 
+import id.game.core.AudioLoader;
 import id.game.core.Camera;
 import id.game.core.Constants;
 import id.game.core.GameObject;
@@ -9,6 +10,7 @@ import id.game.core.ObjectHandler;
 import id.game.objects.Bullet;
 import id.game.objects.Enemy;
 import id.game.objects.Extralife;
+import id.game.objects.Flag;
 import id.game.objects.Miscellaneous;
 import id.game.objects.Obstacle;
 import id.game.objects.Player;
@@ -44,57 +46,65 @@ public class Game extends Canvas implements Runnable {
     public Bullet bull;
     public static Rect[] pager = new Rect[5];
     BufferedImage level;
-    BufferedImage map, background;
-    
+    public static BufferedImage map, background;
+    public Intro intro;
     public static Assets assets;
+    public static AudioLoader sMenu;
     public static boolean statusMonster=false;
     
     static Game game;
     public Menu menu;
     public HUD hud;
+    public Win win;
+    public Level levelImage;
+    public GameOverMenu gameOverMenu;
     public int seconds;
+    
+    public static int lvl=1;
     
     public boolean c = false;
     
     public enum GameState{
-        MAIN_MENU, GAME_PLAY;
+        MAIN_MENU, GAME_PLAY, GAME_OVER,INTRO,INTRO2, WIN,LEVEL1,LEVEL2;
     }
     
     public GameState currentState = GameState.MAIN_MENU;
+
+//    public void setCurrentState(GameState currentState) {
+//        this.currentState = currentState;
+//    }
     
     public void init() {
         // init
         menu = new Menu();
         hud = new HUD();
+        gameOverMenu = new GameOverMenu();
+        levelImage = new Level();
+        win = new Win();
         handler = new ObjectHandler();
         keyHandler = new KeyHandler(handler);
         mouseHandler = new MouseHandler();
         assets = new Assets();
         camera = new Camera(100, 100);
-        
+        intro=new Intro();
         addKeyListener(keyHandler);
         addMouseListener(mouseHandler);
         
+        sMenu= new AudioLoader();
+        sMenu.load("../assets/sound/background2.wav");
+        
         //level = ImageLoader.load("map3.png");
+        if(lvl==2){
+            map=ImageLoader.load("level2.png");
+        }else{
         map = ImageLoader.load("mapTiled.png");
+        }
         background = ImageLoader.load("back.png");
-        //loadLevel();
         
         player = new Player(0, 0, handler);
         handler.addObject(player);
         
         
-        
-        
-        
-        //enemy = new Enemy(450, 0, handler);
-        //enemy = new Enemy(1500, 0, handler);
-        
-        monster();
-        
-        
-        ground();
-        obstacle();
         
     }
     
@@ -104,66 +114,72 @@ public class Game extends Canvas implements Runnable {
     }
     
     public void monster(){
-        handler.addObject(new Enemy(1, 450, 640, 100, handler));
-        handler.addObject(new Enemy(1, 1500, 640, 100, handler));
-        handler.addObject(new Enemy(2, 900, 690, 100, handler));
-        handler.addObject(new Enemy(2, 2000, 940,100, handler));
-        handler.addObject(new Enemy(2, 2500, 940,100, handler));
-        handler.addObject(new Enemy(1, 3500, 640,100, handler));
-        handler.addObject(new Enemy(2, 4200, 640,100, handler));
-        handler.addObject(new Enemy(2, 4200, 1020,100, handler));
-        handler.addObject(new Enemy(1, 4150, 640,100, handler));
-        handler.addObject(new Enemy(2, 3300, 1020,100, handler));
+        handler.addObject(new Enemy(2, 896, 768,25, handler));
+        handler.addObject(new Enemy(2, 7104, 320, 25, handler));
+        handler.addObject(new Enemy(2, 2304, 960,25, handler));
+        handler.addObject(new Enemy(2, 7488, 576,25, handler));
+        handler.addObject(new Enemy(2, 5952, 1024,25, handler));
+        handler.addObject(new Enemy(1, 3456, 832,25, handler));
+        handler.addObject(new Enemy(1, 4288, 832, 25, handler));
+        handler.addObject(new Enemy(2, 4288, 1024, 25, handler));
+        handler.addObject(new Enemy(2, 5091, 746,25, handler));
+        handler.addObject(new Enemy(1, 7296, 1024,25, handler));
+        
+        
+        
+        handler.addObject(new Enemy(3, 9000, 640,200, handler));
     }
+
     
     public void ground(){
-        handler.addObject(new Rect(3, 0, 1088 , 576, 192));
-        handler.addObject(new Rect(3, 448, 1024 , 192, 64));
-        handler.addObject(new Rect(3, 704, 960 , 128, 64));
-        handler.addObject(new Rect(3, 896, 896 , 128, 64));
-        handler.addObject(new Rect(3, 1088, 960 , 128, 64));
-        handler.addObject(new Rect(3, 1280, 1024 , 192, 64));
-        handler.addObject(new Rect(3, 1334, 1088 , 512, 192));
-        handler.addObject(new Rect(3, 1984, 1088 , 64, 192));
-        handler.addObject(new Rect(3, 2176, 1088 , 64, 192));
-        handler.addObject(new Rect(3, 2368, 1088 , 64, 192));
-        handler.addObject(new Rect(3, 2560, 1088 , 64, 192));
-        handler.addObject(new Rect(3, 2816, 1088 , 384, 192));
-        handler.addObject(new Rect(3, 3200, 640 , 64, 320));
-        handler.addObject(new Rect(3, 3200, 1154 , 3200, 125));
-        handler.addObject(new Rect(3, 3264, 896 , 448, 64));
-        handler.addObject(new Rect(3, 3904, 768 , 128, 64));
-        handler.addObject(new Rect(3, 3968, 832 , 64, 128));
-        handler.addObject(new Rect(3, 4032, 896 , 640, 64));
-        handler.addObject(new Rect(3, 4608, 832 , 64, 64));
-        handler.addObject(new Rect(3, 4928, 896 , 64, 64));
-        handler.addObject(new Rect(3, 5504, 832 , 896, 128));
-        handler.addObject(new Rect(3, 5248, 896 , 64, 64));
-        handler.addObject(new Rect(3, 6336, 640 , 64, 192));
-        handler.addObject(new Rect(3, 3840, 960 , 128, 64));
-        handler.addObject(new Rect(3, 3264, 128 , 3072, 128));
-        handler.addObject(new Rect(3, 6336, 128 , 64, 512));
-        handler.addObject(new Rect(3, 3200, 128 , 64, 512));
-        handler.addObject(new Rect(3, 6272, 384 , 64, 64));
-        handler.addObject(new Rect(3, 5888, 384 , 128, 64));
-        handler.addObject(new Rect(3, 5632, 512 , 64, 64));
-        handler.addObject(new Rect(3, 5824, 576 , 64, 64));
-        handler.addObject(new Rect(3, 5824, 768 , 192, 64));
-        handler.addObject(new Rect(3, 3200, 1088 , 1536, 64));
-        handler.addObject(new Rect(3, 5376, 1088 , 1024, 64));
-        handler.addObject(new Rect(3, 6400, 1088 , 3200, 192));
-        handler.addObject(new Rect(3, 7936, 0 , 64, 896));
-        handler.addObject(new Rect(3, 8000, 0 , 1600, 64));
-        handler.addObject(new Rect(3, 9536, 64 , 64, 1024));
-        handler.addObject(new Rect(3, 6784, 832 , 128, 64));
-        handler.addObject(new Rect(3, 7232, 768 , 128, 64));
-        handler.addObject(new Rect(3, 7680, 704 , 128, 64));
-        handler.addObject(new Rect(3, 7872, 512 , 64, 64));
-        handler.addObject(new Rect(3, 7616, 320 , 64, 64));
-        handler.addObject(new Rect(3, 6912, 128 , 256, 128));
-        handler.addObject(new Rect(3, 6912, 256 , 64, 192));
-        handler.addObject(new Rect(3, 6976, 384 , 320, 64));
+        handler.addObject(new Rect(3, 0, 1088 , 576, 192, handler));
+        handler.addObject(new Rect(3, 448, 1024 , 192, 64, handler));
+        handler.addObject(new Rect(3, 704, 960 , 128, 64, handler));
+        handler.addObject(new Rect(3, 896, 896 , 128, 64, handler));
+        handler.addObject(new Rect(3, 1088, 960 , 128, 64, handler));
+        handler.addObject(new Rect(3, 1280, 1024 , 192, 64, handler));
+        handler.addObject(new Rect(3, 1334, 1088 , 512, 192, handler));
+        handler.addObject(new Rect(3, 1984, 1088 , 64, 192, handler));
+        handler.addObject(new Rect(3, 2176, 1088 , 64, 192, handler));
+        handler.addObject(new Rect(3, 2368, 1088 , 64, 192, handler));
+        handler.addObject(new Rect(3, 2560, 1088 , 64, 192, handler));
+        handler.addObject(new Rect(3, 2816, 1088 , 384, 192, handler));
+        handler.addObject(new Rect(3, 3200, 640 , 64, 320, handler));
+        handler.addObject(new Rect(3, 3200, 1154 , 3200, 125, handler));
+        handler.addObject(new Rect(3, 3264, 896 , 448, 64, handler));
+        handler.addObject(new Rect(3, 3904, 768 , 128, 64, handler));
+        handler.addObject(new Rect(3, 3968, 832 , 64, 128, handler));
+        handler.addObject(new Rect(3, 4032, 896 , 640, 64, handler));
+        handler.addObject(new Rect(3, 4608, 832 , 64, 64, handler));
+        handler.addObject(new Rect(3, 4928, 896 , 64, 64, handler));
+        handler.addObject(new Rect(3, 5504, 832 , 896, 128, handler));
+        handler.addObject(new Rect(3, 5248, 896 , 64, 64, handler));
+        handler.addObject(new Rect(3, 6336, 640 , 64, 192, handler));
+        handler.addObject(new Rect(3, 3840, 960 , 128, 64, handler));
+        handler.addObject(new Rect(3, 3264, 128 , 3072, 128, handler));
+        handler.addObject(new Rect(3, 6336, 128 , 64, 512, handler));
+        handler.addObject(new Rect(3, 3200, 128 , 64, 512, handler));
+        handler.addObject(new Rect(3, 6272, 384 , 64, 64, handler));
+        handler.addObject(new Rect(3, 5888, 384 , 128, 64, handler));
+        handler.addObject(new Rect(3, 5632, 512 , 64, 64, handler));
+        handler.addObject(new Rect(3, 5824, 576 , 64, 64, handler));
+        handler.addObject(new Rect(3, 5824, 768 , 192, 64, handler));
+        handler.addObject(new Rect(3, 3200, 1088 , 1536, 64, handler));
+        handler.addObject(new Rect(3, 5376, 1088 , 1024, 64, handler));
+        handler.addObject(new Rect(3, 6400, 1088 , 3200, 192, handler));
+        handler.addObject(new Rect(3, 7936, 0 , 64, 896, handler));
+        handler.addObject(new Rect(3, 8000, 0 , 1600, 64, handler));
+        handler.addObject(new Rect(3, 9536, 64 , 64, 1024, handler));
+        handler.addObject(new Rect(3, 6784, 832 , 128, 64, handler));
+        handler.addObject(new Rect(3, 7232, 768 , 128, 64, handler));
+        handler.addObject(new Rect(3, 7680, 704 , 128, 64, handler));
+        handler.addObject(new Rect(3, 7872, 512 , 64, 64, handler));
+        handler.addObject(new Rect(3, 7616, 320 , 64, 64, handler));
+        handler.addObject(new Rect(3, 6912, 128 , 256, 128, handler));
+        handler.addObject(new Rect(3, 6912, 256 , 64, 192, handler));
+        handler.addObject(new Rect(3, 6976, 384 , 320, 64, handler));
     }
+    
     
     public void obstacle(){
         handler.addObject(new Obstacle(3, 1856, 1216, 128, 64));
@@ -174,18 +190,43 @@ public class Game extends Canvas implements Runnable {
         handler.addObject(new Obstacle(3, 4736, 1088, 640, 64));
     }
     
-//    public void addBulletMomon(){
-//
-//        if(c){
-//            handler.addObject(Enemy.bull);
-//            c=false;
-//        }else{
-//            
-//            c=true;
-//        }
-//        
-//    }
+    public void monster2(){
+                handler.addObject(new Enemy(1,833,964,50, handler));
+                handler.addObject(new Enemy(1, 2370, 642, 50, handler));
+                handler.addObject(new Enemy(1, 2934, 457, 50, handler));
+                handler.addObject(new Enemy(1, 1793, 325, 50, handler));
+                handler.addObject(new Enemy(1, 3956, 510, 50, handler));
+                handler.addObject(new Enemy(2, 3831, 382, 50, handler));
+                handler.addObject(new Enemy(1, 2877, 956, 50, handler));
+                handler.addObject(new Enemy(3, 1981, 959, 300, handler));
+                
+    }
+
+    public void ground2(){
+         handler.addObject(new Rect(3, 0, 1024, 1280, 64, handler));
+         handler.addObject(new Rect(3, 1407, 960, 128, 64,handler));
+         handler.addObject(new Rect(3, 1601, 831, 64, 64,handler));
+         handler.addObject(new Rect(3, 1665, 831, 128, 64,handler));
+         handler.addObject(new Rect(3, 1665, 768, 128, 64,handler));
+         handler.addObject(new Rect(3, 1726, 704, 64, 64,handler));
+         handler.addObject(new Rect(3, 1790, 704, 768, 64,handler));
+         handler.addObject(new Rect(3, 1725, 896, 64, 128,handler));
+          handler.addObject(new Rect(3, 2612, 586, 203, 56,handler));
+          handler.addObject(new Rect(3, 2871, 521, 199, 56,handler));
+          handler.addObject(new Rect(3, 3133, 452, 195, 63,handler));
+          handler.addObject(new Rect(3, 1603, 395, 1088, 32,handler));
+          handler.addObject(new Rect(3, 3510, 252, 1024, 64,handler));
+          handler.addObject(new Rect(3, 3512, 575, 1024, 128,handler));
+          handler.addObject(new Rect(3, 4470, 318, 64, 256,handler));
+          handler.addObject(new Rect(3, 2685, 1019, 832, 64,handler));
+         handler.addObject(new Rect(3, 1725, 1024, 960, 64,handler));
+          handler.addObject(new Rect(3, 3511, 704, 64, 384,handler));
     
+    }
+
+    public void obstacle2(){
+        handler.addObject(new Obstacle(3, 1283, 1083, 448, 64));
+    }
 
     
     public synchronized void start() {
@@ -237,7 +278,20 @@ public class Game extends Canvas implements Runnable {
         switch(currentState){
             case MAIN_MENU:
                 menu.tick();
+                Flag.isTouched = false;
                 break;
+            case INTRO :
+                intro.tick();
+                break;
+            case INTRO2 :
+                intro.tick();
+                break;
+            case LEVEL1 :
+                levelImage.tick();
+                break;
+            case LEVEL2 :
+                levelImage.tick();
+                break;    
             case GAME_PLAY:
 
                 hud.tick();
@@ -253,6 +307,7 @@ public class Game extends Canvas implements Runnable {
                 
                 if(Miscellaneous.pager1)
                 {
+                    System.out.println("Buka Pager");
                     handler.removeObject(pager[0]);
                     handler.removeObject(pager[1]);
                 }
@@ -277,13 +332,24 @@ public class Game extends Canvas implements Runnable {
                 }
                 
                 
-                if(Enemy.liatPlayer)
+                if(Enemy.liatPlayerKiri)
+                {  
+                    //enemyBullet.addFirst(bull);
+                    if(seconds>=100){
+                    
+                    handler.addObject(Enemy.bull); 
+                    seconds=0;
+                    Enemy.liatPlayerKiri=false;
+                    }
+                }
+                
+                if(Enemy.liatPlayerKanan)
                 {  
                     //enemyBullet.addFirst(bull);
                     if(seconds>=100){
                     handler.addObject(Enemy.bull); 
                     seconds=0;
-                    Enemy.liatPlayer=false;
+                    Enemy.liatPlayerKanan=false;
                     }
                 }
                 
@@ -293,8 +359,38 @@ public class Game extends Canvas implements Runnable {
                     Bullet.kenaBull=false;
                 }
                 
+                if(Bullet.knPlayer)
+                {
+                    
+                    hud.health-=20;
+                    if(hud.jmlhDarah<0){
+                        hud.jmlhDarah=0;
+                    }else{
+                        hud.jmlhDarah-=1;
+                    }
+                    
+                    handler.removeObject(Bullet.bullEnemy);
+                    Bullet.knPlayer=false;
+                    
+                    if(hud.health==0)
+                    {
+                        sMenu.stop();
+                        handler.removeObject(player);
+                        Game.getInstance().currentState = Game.GameState.GAME_OVER;
+                    }
+                    
+                    
+                    
+                }
+                
                 handler.tick();
                 camera.tick();
+                break;
+            case GAME_OVER:
+                gameOverMenu.tick();
+                break;
+            case WIN:
+                win.tick();
                 break;
         }
     }
@@ -314,8 +410,23 @@ public class Game extends Canvas implements Runnable {
 
         switch(currentState)
         {
+            case INTRO :
+                intro.render(g);
+                System.out.println(currentState);
+                break;
+            case INTRO2 :
+                intro.render(g);
+                System.out.println(currentState);
+                break;
             case MAIN_MENU:
                 menu.render(g);
+                //System.out.println(currentState);
+                break;
+            case LEVEL1 :
+                levelImage.render(g);
+                break;
+            case LEVEL2 :
+                levelImage.render(g);
                 break;
             case GAME_PLAY:
                 g.setColor(new Color(48, 54, 101));
@@ -324,15 +435,24 @@ public class Game extends Canvas implements Runnable {
                 g.scale(0.9 , 0.9);
                 
                 g.translate((int)camera.getX(), (int)camera.getY());
-                g.drawImage(background, 0, 640, 9600 , 640 , null);
-                g.drawImage(map, 0, 0, 9600 , 1280 , null);
                 
+                //g.drawImage(background, 0, 640, 9600 , 640 , null);
+                if(lvl==1)
+                g.drawImage(map, 0, 0, 9600 , 1280 , null);
+                else if(lvl==2)
+                    g.drawImage(map, 0,0, 6708, 1351,null);
                 handler.render(g);
                 g.translate(-(int)camera.getX(), -(int)camera.getY());
                 
                 
                 
                 hud.render(g);
+                break;
+            case GAME_OVER:
+                gameOverMenu.render(g);
+                break;
+            case WIN:
+                win.render(g);
                 break;
         }
         
@@ -427,31 +547,83 @@ public class Game extends Canvas implements Runnable {
         hud.health=100;
         hud.jmlhDarah=5;
         handler.removeObject(player);
-        player = new Player(0, 640,handler);
-        handler.addObject(player);
-        handler.addObject(new Miscellaneous(1, 6272, 320, handler));
-        handler.addObject(new Miscellaneous(3, 8064, 960, handler));
-        kunci = new Miscellaneous(2, 6976, 320, handler);
-        handler.addObject(kunci);
-        pager[0]= new Rect(1, 5504, 960, 64, 64);
-        pager[1]= new Rect(1, 5504, 1024, 64, 64);
-        pager[2]= new Rect(4, 7936, 896, 64, 64);
-        pager[3]= new Rect(5, 7936, 960, 64, 64);
-        pager[4]= new Rect(6, 7936, 1024, 64, 64);
-        handler.addObject(pager[0]);
-        handler.addObject(pager[1]);
-        handler.addObject(pager[2]);
-        handler.addObject(pager[3]);
-        handler.addObject(pager[4]);
+        handler.objects.clear();
         
-        extraLIfe();
+        if(lvl==1)
+        {
+            handler.addObject(new Flag(2825, 1024, handler));
+
+            monster();
+
+            ground();
+            obstacle();
+            //Checkpoint
+            if (Flag.isTouched) {
+                player = new Player(2825, 640,handler);
+            }
+            else player = new Player(0, 640,handler);
+
+            //player = new Player(0, 640,handler);
+            handler.addObject(player);
+            handler.addObject(new Miscellaneous(1, 6272, 320, handler));
+            handler.addObject(new Miscellaneous(3, 8064, 960, handler));
+
+            if(kunci!=null)
+            {
+                handler.removeObject(kunci);
+            }
+
+            kunci = new Miscellaneous(2, 6976, 320, handler);
+            handler.addObject(kunci);
+            for (int i = 0; i < pager.length; i++) {
+                if(pager[i]!=null)
+                {
+                    handler.removeObject(pager[i]);
+                }
+
+
+            }
+            pager[0]= new Rect(1, 5504, 960, 64, 64, handler);
+            pager[1]= new Rect(1, 5504, 1024, 64, 64, handler);
+            pager[2]= new Rect(4, 7936, 896, 64, 64, handler);
+            pager[3]= new Rect(5, 7936, 960, 64, 64, handler);
+            pager[4]= new Rect(6, 7936, 1024, 64, 64, handler);
+
+            handler.addObject(pager[0]);
+            handler.addObject(pager[1]);
+            handler.addObject(pager[2]);
+            handler.addObject(pager[3]);
+            handler.addObject(pager[4]);
+
+        extraLIfe();    
+        }
+        
+        if(lvl==2)
+        {
+            
+              
+//            removeGround();
+            player = new Player(0, 0,handler);
+                ground2();
+                monster2();
+                obstacle2();
+                //player = new Player(0, 640,handler);
+                handler.addObject(player);
+
+        }
+        
         
         currentState = GameState.GAME_PLAY;
+        sMenu.play2();
+        System.out.println("playgame!");
     }
     
     public static Game getInstance(){
         return game;
     }
+    
+
+    
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();

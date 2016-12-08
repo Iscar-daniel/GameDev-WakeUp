@@ -21,9 +21,9 @@ public class Menu {
     public Button btnExit;
     
     public Menu(){
-        background = ImageLoader.load("menu.png");
-        btnPlay = new Button(315, 400, "Play Game");
-        btnExit = new Button(315, 460, "Exit");
+        background = ImageLoader.load("welcome_screen.png");
+        btnPlay = new Button(80, 150, "Play Game");
+        btnExit = new Button(80, 210, "Exit");
     }
     
     public void tick(){
